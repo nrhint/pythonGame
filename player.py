@@ -1,6 +1,6 @@
 #Nathan Hinton
 #11/28/2018
-
+#11/29/2018
 #Player class of my game
 import random
 
@@ -23,21 +23,26 @@ class player:
         self.level += 1
         self.maxLife = round(self.maxLife * self.levelIncrease)
         self.maxShields = round(self.maxShields * self.levelIncrease)
-        self.sheildRegenRate = round(self.maxShields/20)
+        self.shieldRegenRate = round(self.maxShields/20)
         print("You leveled up!  Here are your new stats:")
         print("Level %s"%str(self.level))
         self.stat()
-        print("Shield regeneration rate now: %s"%str(self.sheildRegenRate))
+        print("Shield regeneration rate now: %s"%str(self.shieldRegenRate))
         self.nextLevelAt = self.level*10+self.level
         print("Next level at %s xp."%str(self.nextLevelAt))
     def upgradeAttack(self):
         self.attackLevel += 1
-    def attack(self):
+    def attack(self, targets):
         self.i = input("attack (y, n) ")
         if self.i == 'y':
-            self.xp += random.randint(0, 100)/10*(.5*self.attackLevel)
-            print(random.randint(0, 100)/10*(.5*self.attackLevel))
-            return random.randint(0, 100)/10*(.5*self.attackLevel)
+            #Pick a target:
+            for x in targets:
+                print(str(x)+' : '+str(targets[x].name))
+            target = input("Number: ")
+            damage = random.randint(0, 100)/10*(.5*self.attackLevel)
+            self.xp += damage
+            print(damage)
+            return damage, target
         else:
             print('%s chose not to attack'%self.name)
     def getHurt(self, damage):
@@ -47,8 +52,9 @@ class player:
             self.life += self.shields
             self.shields = 0
     def stat(self):
+        self.xp = round(self.xp, 2)
         print("XP: "+str(self.xp))
-        #print("Max Life/Sheilds: "+str(self.maxLife))
+        #print("Max Life/shields: "+str(self.maxLife))
         print("Current Life: "+str(self.life))
         print("Current Shields: "+str(self.shields))
         #print("current level: "+str(self.level))
